@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import test from 'node:test';
@@ -68,11 +69,19 @@ test('CLI help exits successfully', () => {
 
 test('documentation site is static, disclosed, and contains no secret form fields', () => {
   const html = readFileSync('site/index.html', 'utf8');
+  const headers = readFileSync('site/_headers', 'utf8');
+  const structuredData = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1];
+  const structuredDataHash = createHash('sha256').update(structuredData).digest('base64');
   assert.match(html, /Secure SMS Webhook Validator/);
   assert.match(html, /receive-smss\.live\/sms\/us/);
   assert.match(html, /maintained by the same team/i);
   assert.doesNotMatch(html, /type=["']password/);
   assert.doesNotMatch(html, /<input[^>]+name=["'][^"']*(secret|token|key)/i);
+  assert.match(headers, /Content-Security-Policy:/);
+  assert.match(headers, /frame-ancestors 'none'/);
+  assert.match(headers, /X-Frame-Options: DENY/);
+  assert.ok(headers.includes(`'sha256-${structuredDataHash}'`));
+  assert.doesNotMatch(headers, /unsafe-inline|unsafe-eval/);
 });
 
 test('package surface does not contain placeholder runtime imports', () => {

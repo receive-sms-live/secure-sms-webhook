@@ -6,7 +6,7 @@
 
 Security-first webhook validation for applications that receive SMS events from Twilio, Telnyx, Vonage, Plivo, or a custom HMAC provider. The package combines signature verification, timestamp checks, replay protection, payload validation, PII redaction, Express middleware, and a defensive localhost tester.
 
-> Status: `0.1.0` release candidate. Validate the exact provider configuration and test in staging before production use.
+> Current release: `0.1.1`. The API is pre-1.0; validate the exact provider configuration and test in staging before production use.
 
 ## Why
 
@@ -96,7 +96,7 @@ Use `timestamp` and `timestampSeparator` when your signing contract includes a t
 | Plivo V3 | HMAC-SHA256 over URL, sorted parameters, and nonce | Unique nonce plus message UUID |
 | Generic HMAC | SHA-256 by default; configurable encoding/prefix | Configurable timestamp and event ID |
 
-Vonage's legacy MD5 modes are rejected by default. If migration compatibility is unavoidable, pass `allowLegacyMd5: true` explicitly and document the risk.
+Vonage's legacy MD5 modes are not supported. Configure HMAC-SHA256 or stronger in the provider dashboard.
 
 ## Payload validation and logging
 
@@ -147,7 +147,7 @@ See [CLI safety and interpretation](docs/cli.md).
 - Constant-time comparison for shared-secret signatures.
 - Raw-body and exact-URL validation where required.
 - Atomic replay-store interface.
-- CodeQL, dependency review, Dependabot, tests, and release provenance workflow.
+- CodeQL, dependency review, Dependabot, tests, and trusted npm publishing with provenance.
 - Responsible disclosure process in [SECURITY.md](SECURITY.md).
 
 This project reduces common implementation mistakes; it is not a security certification. Review provider documentation, proxy URL handling, key rotation, storage availability, and application side effects for your environment.
