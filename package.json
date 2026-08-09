@@ -16,7 +16,7 @@
     }
   },
   "bin": {
-    "secure-sms-webhook": "./cli/tester.js"
+    "secure-sms-webhook": "cli/tester.js"
   },
   "files": [
     "src",
