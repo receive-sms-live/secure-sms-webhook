@@ -23,7 +23,7 @@ Official reference: <https://developers.telnyx.com/docs/messaging/messages/recei
 
 ## Vonage SMS
 
-Signed inbound SMS webhooks must be enabled for the account. Vonage supports legacy MD5 and HMAC variants. Configure HMAC-SHA256 or stronger; this project rejects MD5 modes unless `allowLegacyMd5` is explicitly enabled.
+Signed inbound SMS webhooks must be enabled for the account. Configure HMAC-SHA256 or stronger. Legacy MD5 modes are intentionally unsupported.
 
 Official reference: <https://developer.vonage.com/en/getting-started/concepts/signing-messages>
 

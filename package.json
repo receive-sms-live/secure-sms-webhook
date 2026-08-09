@@ -1,6 +1,6 @@
 {
   "name": "secure-sms-webhook",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Security-first SMS webhook signature validation, replay protection, payload checks, PII redaction, and a defensive local tester.",
   "type": "module",
   "main": "./src/index.js",
@@ -56,7 +56,7 @@
     "type": "git",
     "url": "git+https://github.com/receive-sms-live/secure-sms-webhook.git"
   },
-  "homepage": "https://github.com/receive-sms-live/secure-sms-webhook#readme",
+  "homepage": "https://secure-sms-webhook.pages.dev/",
   "bugs": {
     "url": "https://github.com/receive-sms-live/secure-sms-webhook/issues"
   },

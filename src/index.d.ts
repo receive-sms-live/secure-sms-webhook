@@ -61,8 +61,7 @@ export interface VonageOptions {
   params: Record<string, unknown>;
   signature?: string;
   secret: string;
-  algorithm?: 'md5hash' | 'md5' | 'sha1' | 'sha256' | 'sha512';
-  allowLegacyMd5?: boolean;
+  algorithm?: 'sha1' | 'sha256' | 'sha512';
   maxAgeSeconds?: number | false;
   maxFutureSkewSeconds?: number;
   now?: number;

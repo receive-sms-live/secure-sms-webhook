@@ -120,11 +120,21 @@ test('Vonage HMAC-SHA256 matches canonical parameter vector', () => {
   }).valid, true);
 });
 
-test('Vonage rejects legacy MD5 unless explicitly allowed', () => {
+test('Vonage does not expose legacy MD5 algorithms', () => {
   const params = { timestamp: '1700000000', text: 'hello' };
-  const signature = createVonageSignature({ params, secret: 'secret', algorithm: 'md5hash' });
-  assert.equal(verifyVonageWebhook({ params, signature, secret: 'secret', algorithm: 'md5hash', maxAgeSeconds: false }).code, 'INSECURE_ALGORITHM');
-  assert.equal(verifyVonageWebhook({ params, signature, secret: 'secret', algorithm: 'md5hash', allowLegacyMd5: true, maxAgeSeconds: false }).valid, true);
+  for (const algorithm of ['md5', 'md5hash']) {
+    assert.throws(
+      () => createVonageSignature({ params, secret: 'secret', algorithm }),
+      /Unsupported Vonage algorithm/,
+    );
+    assert.equal(verifyVonageWebhook({
+      params,
+      signature: '00'.repeat(16),
+      secret: 'secret',
+      algorithm,
+      maxAgeSeconds: false,
+    }).code, 'CONFIGURATION_ERROR');
+  }
 });
 
 test('Plivo V3 matches a fixed HMAC-SHA256 vector and token rotation list', () => {
