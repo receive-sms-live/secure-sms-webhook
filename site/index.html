@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Secure SMS Webhook Validator — Twilio, Telnyx, Vonage, Plivo & HMAC</title>
+  <meta name="description" content="Generate secure SMS webhook validation examples for Twilio, Telnyx, Vonage, Plivo, and Generic HMAC. Open-source signature checks, replay protection, payload validation, and PII redaction.">
+  <meta name="keywords" content="Twilio webhook security, SMS webhook validation, verify Twilio webhook, webhook signature validator, Telnyx Ed25519, Generic HMAC">
+  <meta name="robots" content="index,follow">
+  <meta property="og:title" content="Secure SMS Webhook Validator">
+  <meta property="og:description" content="Security-first validation and defensive testing for SMS webhooks.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://secure-sms-webhook.pages.dev/">
+  <link rel="canonical" href="https://secure-sms-webhook.pages.dev/">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Secure SMS Webhook Validator",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Node.js",
+    "isAccessibleForFree": true,
+    "license": "https://opensource.org/license/mit",
+    "description": "Open-source SMS webhook signature validation, replay protection, payload checks, and PII redaction."
+  }
+  </script>
+</head>
+<body>
+  <header class="nav shell">
+    <a class="brand" href="#top" aria-label="Secure SMS Webhook home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 48 48"><path d="M24 3 42 10v12c0 11.4-7.4 19-18 23C13.4 41 6 33.4 6 22V10l18-7Z"/><path d="m15 23 6 6 12-13"/></svg>
+      </span>
+      <span>Secure SMS Webhook</span>
+    </a>
+    <nav aria-label="Primary navigation">
+      <a href="#generator">Generator</a>
+      <a href="#providers">Providers</a>
+      <a href="#security">Security</a>
+      <a class="github-link" href="https://github.com/receive-sms-live/secure-sms-webhook">GitHub ↗</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero shell">
+      <div class="hero-copy">
+        <div class="eyebrow"><span></span> Open source · Security first</div>
+        <h1>Know who sent<br>your SMS webhook.</h1>
+        <p class="lead">Verify provider signatures, reject stale or replayed events, validate SMS payloads, and redact sensitive logs before your application trusts a request.</p>
+        <div class="actions">
+          <a class="button primary" href="#generator">Generate secure example</a>
+          <code>npm i secure-sms-webhook</code>
+        </div>
+        <div class="trust-row" aria-label="Project characteristics">
+          <span>✓ No runtime dependencies</span>
+          <span>✓ Local defensive CLI</span>
+          <span>✓ MIT licensed</span>
+        </div>
+      </div>
+      <div class="terminal" aria-label="Example security report">
+        <div class="terminal-top"><i></i><i></i><i></i><span>security-report</span></div>
+        <div class="terminal-body">
+          <p><b>$</b> npx secure-sms-webhook test</p>
+          <p class="muted">Target  http://127.0.0.1:3000/webhooks/sms</p>
+          <div class="terminal-rule"></div>
+          <p class="pass">✓ Missing signature rejected</p>
+          <p class="pass">✓ Invalid signature rejected</p>
+          <p class="pass">✓ Valid signature accepted</p>
+          <p class="fail">✗ Replay request processed twice</p>
+          <p class="pass">✓ Invalid phone number rejected</p>
+          <p class="warning">! Payload size limit not observed</p>
+          <div class="terminal-rule"></div>
+          <p><span class="tag critical">CRITICAL</span> Duplicate side effect detected</p>
+          <p class="muted">Use an atomic event-ID claim before processing.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="proof-strip">
+      <div class="shell proof-grid">
+        <span>Signature verification</span><i></i>
+        <span>Replay protection</span><i></i>
+        <span>Timestamp policy</span><i></i>
+        <span>PII redaction</span>
+      </div>
+    </section>
+
+    <section id="generator" class="generator-section shell">
+      <div class="section-heading">
+        <div><div class="eyebrow"><span></span> Secure example generator</div><h2>Start with safer defaults.</h2></div>
+        <p>This browser tool generates code only. It never asks for, stores, or transmits provider secrets.</p>
+      </div>
+      <div class="generator-card">
+        <form id="generator-form" class="controls">
+          <label>Provider
+            <select id="provider">
+              <option value="twilio">Twilio</option>
+              <option value="telnyx">Telnyx</option>
+              <option value="vonage">Vonage</option>
+              <option value="plivo">Plivo</option>
+              <option value="generic">Generic HMAC</option>
+            </select>
+          </label>
+          <label>Language
+            <select id="language">
+              <option value="node">Node.js</option>
+              <option value="python">Python</option>
+              <option value="php">PHP</option>
+            </select>
+          </label>
+          <label class="wide">Public webhook URL
+            <input id="webhook-url" type="url" value="https://example.com/webhooks/sms" autocomplete="off">
+            <small>Used in generated code only. Provider signatures often cover this exact URL.</small>
+          </label>
+          <fieldset class="wide">
+            <legend>Security configuration</legend>
+            <label class="check"><input type="checkbox" checked disabled><span>Signature validation <small>Required</small></span></label>
+            <label class="check"><input id="replay" type="checkbox" checked><span>Replay protection</span></label>
+            <label class="check"><input id="timestamp" type="checkbox" checked><span>Timestamp validation</span></label>
+            <label class="check"><input id="payload" type="checkbox" checked><span>Payload validation</span></label>
+            <label class="check"><input id="redaction" type="checkbox" checked><span>PII redaction</span></label>
+          </fieldset>
+          <button class="button primary wide" type="submit">Generate secure example</button>
+          <p class="privacy-note wide"><span>●</span> Runs entirely in your browser. Use environment variables for real secrets.</p>
+        </form>
+        <div class="code-panel">
+          <div class="code-toolbar"><span id="code-label">Node.js · Twilio</span><button id="copy-code" type="button">Copy code</button></div>
+          <pre><code id="generated-code"></code></pre>
+          <div id="code-note" class="code-note"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="providers" class="providers-section shell">
+      <div class="section-heading compact">
+        <div><div class="eyebrow"><span></span> Provider-aware</div><h2>One policy layer. Different cryptography.</h2></div>
+      </div>
+      <div class="provider-grid">
+        <article><div class="provider-icon">Tw</div><h3>Twilio</h3><p>Exact URL, form parameters, raw JSON body hashes, and HMAC-SHA1 compatibility.</p></article>
+        <article><div class="provider-icon">Tx</div><h3>Telnyx</h3><p>Ed25519 public-key verification over a timestamped raw JSON payload.</p></article>
+        <article><div class="provider-icon">Vo</div><h3>Vonage</h3><p>Signed SMS callbacks with HMAC-SHA256 recommended and MD5 migration warnings.</p></article>
+        <article><div class="provider-icon">Pl</div><h3>Plivo</h3><p>V3 HMAC-SHA256 validation with nonce-aware replay controls.</p></article>
+        <article class="generic-provider"><div class="provider-icon">H</div><h3>Generic HMAC</h3><p>Configurable hash, encoding, prefix, timestamp separator, and event IDs for private providers and internal APIs.</p></article>
+      </div>
+    </section>
+
+    <section id="security" class="security-section">
+      <div class="shell security-grid">
+        <div>
+          <div class="eyebrow light"><span></span> Defensive by design</div>
+          <h2>Security signals that<br>survive real scrutiny.</h2>
+          <p>The project documents trust boundaries instead of promising perfect security. Every supported provider receives protocol-specific tests and a consistent result model.</p>
+        </div>
+        <ul>
+          <li><b>01</b><span><strong>Constant-time comparison</strong>Shared-secret signatures are decoded before timing-safe byte comparison.</span></li>
+          <li><b>02</b><span><strong>Atomic replay contract</strong>Production stores claim each event only once across concurrent workers.</span></li>
+          <li><b>03</b><span><strong>Raw-body integrity</strong>Signatures are checked before payload normalization or redaction changes bytes.</span></li>
+          <li><b>04</b><span><strong>Responsible disclosure</strong>A public security policy provides a private path to report vulnerabilities.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="testing-resource shell">
+      <div>
+        <div class="eyebrow"><span></span> Non-sensitive testing resource</div>
+        <h2>Testing outbound US SMS delivery?</h2>
+        <p>Developers may inspect non-sensitive delivery using a public US inbox. Public messages are visible to other people—never use public numbers for passwords, OTPs, banking, private accounts, or confidential information.</p>
+        <p class="disclosure">Maintainer disclosure: Secure SMS Webhook and Receive SMS Live are maintained by the same team. This outbound delivery resource does not test an inbound webhook.</p>
+      </div>
+      <a class="button secondary" href="https://receive-smss.live/sms/us">Receive SMS Live — US ↗</a>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-grid"><span>Secure SMS Webhook Validator · MIT License</span><span>Built for defensive testing of endpoints you own.</span></div>
+  </footer>
+  <script src="app.js" type="module"></script>
+</body>
+</html>

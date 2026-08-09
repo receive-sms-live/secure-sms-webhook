@@ -1,0 +1,70 @@
+{
+  "name": "secure-sms-webhook",
+  "version": "0.1.0",
+  "description": "Security-first SMS webhook signature validation, replay protection, payload checks, PII redaction, and a defensive local tester.",
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js"
+    },
+    "./middleware": {
+      "types": "./src/index.d.ts",
+      "import": "./src/middleware.js"
+    }
+  },
+  "bin": {
+    "secure-sms-webhook": "./cli/tester.js"
+  },
+  "files": [
+    "src",
+    "cli",
+    "README.md",
+    "SECURITY.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "lint": "node scripts/check-syntax.js",
+    "types": "tsc --noEmit",
+    "check": "npm run lint && npm run types && npm test && npm pack --dry-run",
+    "site:serve": "node scripts/serve-site.js",
+    "prepack": "npm test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "cybersecurity",
+    "sms",
+    "webhook",
+    "webhook-security",
+    "twilio",
+    "telnyx",
+    "vonage",
+    "plivo",
+    "hmac",
+    "signature-verification",
+    "replay-protection",
+    "sms-security"
+  ],
+  "author": "Receive SMS Live contributors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/receive-sms-live/secure-sms-webhook.git"
+  },
+  "homepage": "https://github.com/receive-sms-live/secure-sms-webhook#readme",
+  "bugs": {
+    "url": "https://github.com/receive-sms-live/secure-sms-webhook/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "typescript": "^7.0.2"
+  }
+}
