@@ -60,6 +60,12 @@ test('CLI refuses public targets before making a request', () => {
   assert.match(run.stderr, /Remote targets are disabled/);
 });
 
+test('CLI help exits successfully', () => {
+  const run = spawnSync(process.execPath, ['cli/tester.js', '--help'], { encoding: 'utf8' });
+  assert.equal(run.status, 0);
+  assert.match(run.stdout, /Secure SMS Webhook Validator/);
+});
+
 test('documentation site is static, disclosed, and contains no secret form fields', () => {
   const html = readFileSync('site/index.html', 'utf8');
   assert.match(html, /Secure SMS Webhook Validator/);

@@ -14,8 +14,10 @@ import {
 const PROVIDERS = new Set(['generic-hmac', 'twilio', 'telnyx', 'vonage', 'plivo']);
 
 function parseArgs(argv) {
-  const options = { command: argv[0] || 'help' };
-  for (let index = 1; index < argv.length; index += 1) {
+  const first = argv[0] || 'help';
+  const firstIsOption = first.startsWith('-');
+  const options = { command: firstIsOption ? 'help' : first };
+  for (let index = firstIsOption ? 0 : 1; index < argv.length; index += 1) {
     const arg = argv[index];
     if (!arg.startsWith('--')) continue;
     const [rawKey, inlineValue] = arg.slice(2).split('=', 2);
@@ -295,7 +297,7 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args.command !== 'test') {
     help();
-    process.exitCode = args.command === 'help' || args.help ? 0 : 1;
+    process.exitCode = args.command === 'help' || args.help || args.h ? 0 : 1;
     return;
   }
 
